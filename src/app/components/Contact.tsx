@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Mail, Phone, MapPin } from "lucide-react";
 
-const BASE_URL = "http://localhost:3001/api";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
 async function fetchSetting(key: string, fallback: string): Promise<string> {
   try {

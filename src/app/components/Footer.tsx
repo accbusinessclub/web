@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Facebook, Instagram, Linkedin, Mail } from "lucide-react";
 
-const BASE_URL = "http://localhost:3001/api";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
 function openGmail(email: string) {
   const url = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(email)}`;

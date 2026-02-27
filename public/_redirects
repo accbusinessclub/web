@@ -1,0 +1,10 @@
+/*
+  Netlify SPA routing fix.
+  Without this, any URL that isn't the root (e.g. /admin/login)
+  returns a 404 on page refresh because Netlify looks for actual
+  files at those paths. This rule rewrites everything to index.html
+  so React Router can handle the routing on the client side.
+*/
+/*  path    file          status  */
+/*    ↓       ↓             ↓    */
+    /       /index.html   200

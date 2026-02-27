@@ -19,7 +19,7 @@ export function Hero() {
   const [hero, setHero] = useState<HeroData>(DEFAULT_HERO);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/hero")
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3001/api"}/hero`)
       .then((r) => r.json())
       .then((data) => {
         if (data && data.title_line1) setHero(data);
