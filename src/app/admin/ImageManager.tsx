@@ -124,8 +124,11 @@ export function ImageManager() {
         }
     };
 
-    const getFullUrl = (url: string) =>
-        url.startsWith("/uploads/") ? `http://localhost:3001${url}` : url;
+    const getFullUrl = (url: string) => {
+        if (!url.startsWith("/uploads/")) return url;
+        const base = (import.meta.env.VITE_API_URL || "http://localhost:3001/api").replace(/\/api$/, "");
+        return `${base}${url}`;
+    };
 
     if (loading) return <div style={{ textAlign: "center", padding: "60px", color: "#64748b" }}>Loading images...</div>;
     if (error) return <div style={{ textAlign: "center", padding: "60px", color: "#ef4444" }}>{error}</div>;

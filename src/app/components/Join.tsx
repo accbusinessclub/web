@@ -5,7 +5,7 @@ export function Join() {
   const [formLink, setFormLink] = useState("https://forms.google.com/");
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/settings/registration_link")
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3001/api"}/settings/registration_link`)
       .then((r) => r.json())
       .then((data) => { if (data && data.value) setFormLink(data.value); })
       .catch(() => { /* use default */ });

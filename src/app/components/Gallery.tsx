@@ -20,7 +20,9 @@ const DEFAULT_IMAGES: GalleryImage[] = [
 ];
 
 function getFullUrl(url: string) {
-  return url.startsWith("/uploads/") ? `http://localhost:3001${url}` : url;
+  if (!url.startsWith("/uploads/")) return url;
+  const base = (import.meta.env.VITE_API_URL || "http://localhost:3001/api").replace(/\/api$/, "");
+  return `${base}${url}`;
 }
 
 export function Gallery() {
@@ -28,7 +30,7 @@ export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/images")
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3001/api"}/images`)
       .then((r) => r.json())
       .then((data: GalleryImage[]) => {
         if (Array.isArray(data) && data.length > 0) {

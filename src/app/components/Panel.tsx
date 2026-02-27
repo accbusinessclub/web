@@ -23,7 +23,7 @@ export function Panel() {
   const [panelMembers, setPanelMembers] = useState<Executive[]>(DEFAULT_PANEL_MEMBERS);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/executives")
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3001/api"}/executives`)
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) setPanelMembers(data);
