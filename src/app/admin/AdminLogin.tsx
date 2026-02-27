@@ -208,16 +208,7 @@ export function AdminLogin() {
                     </button>
                 </form>
 
-                <p
-                    style={{
-                        textAlign: "center",
-                        color: "rgba(255,255,255,0.4)",
-                        fontSize: "13px",
-                        marginTop: "24px",
-                    }}
-                >
-                    Default: admin / accbc2024
-                </p>
+            
             </div>
         </div>
     );
