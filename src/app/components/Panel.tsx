@@ -20,18 +20,42 @@ const DEFAULT_PANEL_MEMBERS: Executive[] = [
 ];
 
 export function Panel() {
-  const [panelMembers, setPanelMembers] = useState<Executive[]>(DEFAULT_PANEL_MEMBERS);
+  const [panelMembers, setPanelMembers] = useState<Executive[] | null>(null);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3001/api"}/executives`)
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) setPanelMembers(data);
+        else setPanelMembers(DEFAULT_PANEL_MEMBERS);
       })
       .catch(() => {
-        // Backend not available; use defaults
+        setPanelMembers(DEFAULT_PANEL_MEMBERS);
       });
   }, []);
+
+  // Show skeleton while loading
+  if (!panelMembers) {
+    return (
+      <section id="panel" className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl text-[#063970] mb-4">Executive Committee</h2>
+            <p className="text-lg text-[#919ea7] max-w-2xl mx-auto">Meet the dedicated team leading ACCBC towards excellence and innovation</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white rounded-lg p-6 text-center shadow-sm">
+                <div className="w-32 h-32 rounded-full bg-gray-200 animate-pulse mx-auto mb-4" />
+                <div className="h-5 bg-gray-200 animate-pulse rounded mx-auto mb-2 w-3/4" />
+                <div className="h-4 bg-gray-100 animate-pulse rounded mx-auto w-1/2" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="panel" className="py-20 bg-gray-50">

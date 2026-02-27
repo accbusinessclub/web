@@ -18,13 +18,13 @@ export function About() {
       icon: Award,
       title: "Achievements",
       description:
-        "Successfully organized 15+ business events, hosted industry leaders, and connected 500+ students with career opportunities in the business sector.",
+        "Successfully organized 200+ business events, hosted industry leaders, and connected 500+ students with career opportunities in the business sector.",
     },
     {
       icon: Calendar,
       title: "Established",
       description:
-        "Founded in 2018, ACCBC has been at the forefront of business education and professional development for Adamjee Cantonment College students.",
+        "Founded in 2010, ACCBC has been at the forefront of business education and professional development for Adamjee Cantonment College students.",
     },
   ];
 

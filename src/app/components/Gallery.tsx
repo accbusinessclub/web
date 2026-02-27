@@ -26,8 +26,9 @@ function getFullUrl(url: string) {
 }
 
 export function Gallery() {
-  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>(DEFAULT_IMAGES);
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[] | null>(null);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3001/api"}/images`)
@@ -35,10 +36,13 @@ export function Gallery() {
       .then((data: GalleryImage[]) => {
         if (Array.isArray(data) && data.length > 0) {
           setGalleryImages(data);
+        } else {
+          setGalleryImages(DEFAULT_IMAGES);
         }
       })
       .catch(() => {
-        // Backend offline — keep default images
+        setGalleryImages(DEFAULT_IMAGES);
+        setFailed(true);
       });
   }, []);
 
@@ -46,13 +50,34 @@ export function Gallery() {
   const closeLightbox = () => setSelectedImage(null);
 
   const navigateImage = (direction: "prev" | "next") => {
-    if (selectedImage === null) return;
+    if (selectedImage === null || !galleryImages) return;
     if (direction === "prev") {
       setSelectedImage((selectedImage - 1 + galleryImages.length) % galleryImages.length);
     } else {
       setSelectedImage((selectedImage + 1) % galleryImages.length);
     }
   };
+
+  const images = galleryImages;
+
+  // Show skeleton grid while waiting for API
+  if (!images) {
+    return (
+      <section id="gallery" className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl text-[#063970] mb-4">Event Gallery</h2>
+            <p className="text-lg text-[#919ea7] max-w-2xl mx-auto">Relive the moments from our past events and activities</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="aspect-video bg-gray-200 rounded-lg animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="gallery" className="py-20 bg-gray-50">
