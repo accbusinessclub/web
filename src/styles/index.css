@@ -1,0 +1,10 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+.border-highlight {
+    border: 2px dashed white;
+    background-color: #ffa500;
+    padding: 0.03em 0.25em;
+    display: inline-block;
+}
