@@ -19,6 +19,7 @@ app.use("/api/executives", require("./routes/executives"));
 app.use("/api/hero", require("./routes/hero"));
 app.use("/api/images", require("./routes/images"));
 app.use("/api/settings", require("./routes/settings"));
+app.use("/api/alumni", require("./routes/alumni"));
 
 // Auth endpoint
 app.post("/api/auth/login", (req, res) => {

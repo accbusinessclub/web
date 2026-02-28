@@ -67,6 +67,17 @@ async function initDB() {
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   )`);
 
+    await run(`CREATE TABLE IF NOT EXISTS alumni (
+    id TEXT PRIMARY KEY,
+    year TEXT NOT NULL,
+    name TEXT NOT NULL,
+    panel_name TEXT NOT NULL,
+    linkedin_url TEXT,
+    image_url TEXT,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )`);
+
     // Add sort_order column to existing images table if it doesn't exist yet
     try {
         await run("ALTER TABLE images ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0");

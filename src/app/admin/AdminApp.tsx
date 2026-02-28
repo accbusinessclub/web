@@ -6,12 +6,15 @@ import { ImageManager } from "./ImageManager";
 import { RegistrationEditor } from "./RegistrationEditor";
 import { FooterEditor } from "./FooterEditor";
 
+import { AlumniManager } from "./AlumniManager";
 
-type Section = "executives" | "hero" | "images" | "registration" | "footer";
+
+type Section = "executives" | "alumni" | "hero" | "images" | "registration" | "footer";
 
 
 const NAV_ITEMS: { id: Section; label: string; icon: string }[] = [
     { id: "executives", label: "Executive Panel", icon: "👥" },
+    { id: "alumni", label: "Alumni Panel", icon: "🎓" },
     { id: "hero", label: "Hero Section", icon: "✏️" },
     { id: "images", label: "Image Gallery", icon: "🖼️" },
     { id: "registration", label: "Registration Link", icon: "📋" },
@@ -255,6 +258,7 @@ export function AdminApp() {
                 {/* Page Content */}
                 <div style={{ padding: "32px", flex: 1 }}>
                     {activeSection === "executives" && <ExecManager />}
+                    {activeSection === "alumni" && <AlumniManager />}
                     {activeSection === "hero" && <HeroEditor />}
                     {activeSection === "images" && <ImageManager />}
                     {activeSection === "registration" && <RegistrationEditor />}

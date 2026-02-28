@@ -119,4 +119,28 @@ export const api = {
         });
         return res.json();
     },
+
+    // Alumni
+    getAlumni: async () => {
+        const res = await request("/alumni");
+        return res.json();
+    },
+    addAlumni: async (data: object) => {
+        const res = await request("/alumni", {
+            method: "POST",
+            body: JSON.stringify(data),
+        });
+        return res.json();
+    },
+    updateAlumni: async (id: string, data: object) => {
+        const res = await request(`/alumni/${id}`, {
+            method: "PUT",
+            body: JSON.stringify(data),
+        });
+        return res.json();
+    },
+    deleteAlumni: async (id: string) => {
+        const res = await request(`/alumni/${id}`, { method: "DELETE" });
+        return res.json();
+    },
 };

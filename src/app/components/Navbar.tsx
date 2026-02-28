@@ -15,25 +15,35 @@ export function Navbar() {
   }, []);
 
   const navItems = [
-    { name: "Home", href: "home" },
-    { name: "About", href: "about" },
-    { name: "Panel", href: "panel" },
-    { name: "Events Gallery", href: "gallery" },
-    { name: "Join", href: "join" },
-    { name: "Contact", href: "contact" },
+    { name: "Home", href: "/", isAnchor: false },
+    { name: "About", href: "/#about", isAnchor: true },
+    { name: "Panel", href: "/#panel", isAnchor: true },
+    { name: "Gallery", href: "/#gallery", isAnchor: true },
+    { name: "Alumni", href: "/alumni", isAnchor: false },
+    { name: "Join", href: "/#join", isAnchor: true },
+    { name: "Contact", href: "/#contact", isAnchor: true },
   ];
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: "smooth" });
+  const handleNavClick = (href: string, isAnchor: boolean) => {
     setIsMobileMenuOpen(false);
+    if (isAnchor) {
+      const sectionId = href.split("#")[1];
+      if (window.location.pathname === "/") {
+        const element = document.getElementById(sectionId);
+        element?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.location.href = href;
+      }
+    } else {
+      window.location.href = href;
+    }
   };
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? "bg-white shadow-md"
-          : "bg-white/95 backdrop-blur-sm"
+        ? "bg-white shadow-md"
+        : "bg-white/95 backdrop-blur-sm"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,8 +63,8 @@ export function Navbar() {
               {navItems.map((item) => (
                 <button
                   key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className="text-gray-700 hover:text-[#063970] px-3 py-2 transition-colors duration-200"
+                  onClick={() => handleNavClick(item.href, !!item.isAnchor)}
+                  className="text-gray-700 hover:text-[#063970] px-3 py-2 transition-colors duration-200 font-medium"
                 >
                   {item.name}
                 </button>
@@ -87,7 +97,7 @@ export function Navbar() {
               {navItems.map((item) => (
                 <button
                   key={item.name}
-                  onClick={() => scrollToSection(item.href)}
+                  onClick={() => handleNavClick(item.href, !!item.isAnchor)}
                   className="text-gray-700 hover:text-[#063970] hover:bg-gray-50 block px-3 py-2 w-full text-left rounded-md transition-colors duration-200"
                 >
                   {item.name}
