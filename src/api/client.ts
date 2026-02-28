@@ -151,4 +151,26 @@ export const api = {
         });
         return res.json();
     },
+
+    forgotPassword: async (email: string) => {
+        const res = await request("/auth/forgot-password", {
+            method: "POST",
+            body: JSON.stringify({ email }),
+        });
+        return res.json();
+    },
+    verifyOTP: async (email: string, otp: string) => {
+        const res = await request("/auth/verify-otp", {
+            method: "POST",
+            body: JSON.stringify({ email, otp }),
+        });
+        return res.json();
+    },
+    resetPassword: async (email: string, newPassword: string) => {
+        const res = await request("/auth/reset-password", {
+            method: "POST",
+            body: JSON.stringify({ email, newPassword }),
+        });
+        return res.json();
+    },
 };

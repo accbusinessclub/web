@@ -125,6 +125,8 @@ async function initDB() {
         await run("INSERT INTO settings (key, value) VALUES ('registration_link', 'https://forms.google.com/')");
     }
 
+    const bcrypt = require("bcryptjs");
+
     // Seed default footer contact & social settings
     const footerDefaults = [
         ["footer_phone", ""],
@@ -134,13 +136,23 @@ async function initDB() {
         ["footer_linkedin", "https://linkedin.com/company/accbc"],
         ["footer_email_icon", "mailto:abc@acc.edu.bd"],
         ["admin_username", "admin"],
-        ["admin_password", "accbc2024"],
     ];
     for (const [key, value] of footerDefaults) {
         const existing = await get("SELECT value FROM settings WHERE key = ?", [key]);
         if (!existing) {
             await run("INSERT INTO settings (key, value) VALUES (?, ?)", [key, value]);
         }
+    }
+
+    // Process admin password separately to hash it
+    const existingPass = await get("SELECT value FROM settings WHERE key = 'admin_password'");
+    if (!existingPass) {
+        const hashedP = await bcrypt.hash("accbc2024", 10);
+        await run("INSERT INTO settings (key, value) VALUES ('admin_password', ?)", [hashedP]);
+    } else if (existingPass.value === "accbc2024") {
+        // Upgrade plaintext "accbc2024" to hashed version across the restart
+        const hashedP = await bcrypt.hash("accbc2024", 10);
+        await run("UPDATE settings SET value = ? WHERE key = 'admin_password'", [hashedP]);
     }
 
     // Seed default gallery images
