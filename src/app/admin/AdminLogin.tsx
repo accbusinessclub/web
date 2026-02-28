@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { api } from "../../api/client";
-import { Eye, EyeOff, X } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 export function AdminLogin() {
     const navigate = useNavigate();
@@ -10,14 +10,6 @@ export function AdminLogin() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
-    // Forgot Password Modal State
-    const [showForgot, setShowForgot] = useState(false);
-    const [forgotStep, setForgotStep] = useState(1); // 1: Email, 2: OTP, 3: New Pass
-    const [recoveryEmail, setRecoveryEmail] = useState("");
-    const [otp, setOtp] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [forgotMsg, setForgotMsg] = useState({ type: "", text: "" });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -33,70 +25,6 @@ export function AdminLogin() {
             }
         } catch {
             setError("Cannot connect to server. Make sure the backend is running on port 3001.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleSendOTP = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setForgotMsg({ type: "", text: "" });
-        try {
-            const res = await api.forgotPassword(recoveryEmail);
-            if (res.success) {
-                setForgotMsg({ type: "success", text: "OTP sent to your email." });
-                setForgotStep(2);
-            } else {
-                setForgotMsg({ type: "error", text: res.error || "Failed to send OTP." });
-            }
-        } catch (err) {
-            setForgotMsg({ type: "error", text: "Connection error." });
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleVerifyOTP = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setForgotMsg({ type: "", text: "" });
-        try {
-            const res = await api.verifyOTP(recoveryEmail, otp);
-            if (res.success) {
-                setForgotMsg({ type: "success", text: "OTP Verified. Enter new password." });
-                setForgotStep(3);
-            } else {
-                setForgotMsg({ type: "error", text: res.error || "Invalid OTP." });
-            }
-        } catch (err) {
-            setForgotMsg({ type: "error", text: "Connection error." });
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleResetPassword = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setForgotMsg({ type: "", text: "" });
-        try {
-            const res = await api.resetPassword(recoveryEmail, newPassword);
-            if (res.success) {
-                setForgotMsg({ type: "success", text: "Password reset successfully! You can now log in." });
-                setTimeout(() => {
-                    setShowForgot(false);
-                    setForgotStep(1);
-                    setRecoveryEmail("");
-                    setOtp("");
-                    setNewPassword("");
-                    setForgotMsg({ type: "", text: "" });
-                }, 2000);
-            } else {
-                setForgotMsg({ type: "error", text: res.error || "Failed to reset password." });
-            }
-        } catch (err) {
-            setForgotMsg({ type: "error", text: "Connection error." });
         } finally {
             setLoading(false);
         }
@@ -200,7 +128,7 @@ export function AdminLogin() {
                         />
                     </div>
 
-                    <div style={{ marginBottom: "16px" }}>
+                    <div style={{ marginBottom: "28px" }}>
                         <label
                             style={{
                                 display: "block",
@@ -250,22 +178,6 @@ export function AdminLogin() {
                         </div>
                     </div>
 
-                    <div style={{ textAlign: "right", marginBottom: "28px" }}>
-                        <button
-                            type="button"
-                            onClick={() => setShowForgot(true)}
-                            style={{
-                                background: "none",
-                                border: "none",
-                                color: "rgba(255,255,255,0.7)",
-                                fontSize: "13px",
-                                cursor: "pointer",
-                            }}
-                        >
-                            Forgot Password?
-                        </button>
-                    </div>
-
                     {error && (
                         <div
                             style={{
@@ -303,79 +215,6 @@ export function AdminLogin() {
                         {loading ? "Signing in..." : "Sign In"}
                     </button>
                 </form>
-
-                {/* Password Recovery Modal */}
-                {showForgot && (
-                    <div style={{
-                        position: "absolute",
-                        top: 0, left: 0, right: 0, bottom: 0,
-                        background: "rgba(6, 57, 112, 0.95)",
-                        borderRadius: "24px",
-                        padding: "40px 32px",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        zIndex: 10
-                    }}>
-                        <button
-                            onClick={() => { setShowForgot(false); setForgotStep(1); setForgotMsg({ type: "", text: "" }); }}
-                            style={{ position: "absolute", top: "20px", right: "20px", background: "transparent", border: "none", color: "white", cursor: "pointer" }}
-                        ><X size={24} /></button>
-
-                        <h2 style={{ color: "white", marginTop: 0, marginBottom: "20px", fontSize: "22px" }}>Reset Password</h2>
-
-                        {forgotMsg.text && (
-                            <div style={{
-                                background: forgotMsg.type === "error" ? "rgba(239,68,68,0.2)" : "rgba(16,185,129,0.2)",
-                                border: `1px solid ${forgotMsg.type === "error" ? "rgba(239,68,68,0.4)" : "rgba(16,185,129,0.4)"}`,
-                                borderRadius: "10px", padding: "12px 16px",
-                                color: forgotMsg.type === "error" ? "#fca5a5" : "#6ee7b7",
-                                fontSize: "14px", marginBottom: "20px", textAlign: "center",
-                            }}>
-                                {forgotMsg.text}
-                            </div>
-                        )}
-
-                        {forgotStep === 1 && (
-                            <form onSubmit={handleSendOTP}>
-                                <label style={{ display: "block", color: "rgba(255,255,255,0.75)", fontSize: "13px", fontWeight: "500", marginBottom: "8px" }}>Recovery Email</label>
-                                <input
-                                    type="email" value={recoveryEmail} onChange={e => setRecoveryEmail(e.target.value)}
-                                    required style={{ ...inputStyle, marginBottom: "20px" }} placeholder="Enter recovery email"
-                                />
-                                <button type="submit" disabled={loading} style={{
-                                    width: "100%", padding: "14px", background: "white", color: "#063970", border: "none", borderRadius: "12px", fontWeight: "700", cursor: loading ? "not-allowed" : "pointer"
-                                }}>{loading ? "Sending..." : "Send OTP"}</button>
-                            </form>
-                        )}
-
-                        {forgotStep === 2 && (
-                            <form onSubmit={handleVerifyOTP}>
-                                <label style={{ display: "block", color: "rgba(255,255,255,0.75)", fontSize: "13px", fontWeight: "500", marginBottom: "8px" }}>Enter OTP Code</label>
-                                <input
-                                    type="text" value={otp} onChange={e => setOtp(e.target.value)}
-                                    required style={{ ...inputStyle, marginBottom: "20px", letterSpacing: "2px", textAlign: "center" }} placeholder="123456" maxLength={6}
-                                />
-                                <button type="submit" disabled={loading} style={{
-                                    width: "100%", padding: "14px", background: "white", color: "#063970", border: "none", borderRadius: "12px", fontWeight: "700", cursor: loading ? "not-allowed" : "pointer"
-                                }}>{loading ? "Verifying..." : "Verify OTP"}</button>
-                            </form>
-                        )}
-
-                        {forgotStep === 3 && (
-                            <form onSubmit={handleResetPassword}>
-                                <label style={{ display: "block", color: "rgba(255,255,255,0.75)", fontSize: "13px", fontWeight: "500", marginBottom: "8px" }}>New Password</label>
-                                <input
-                                    type="text" value={newPassword} onChange={e => setNewPassword(e.target.value)}
-                                    required style={{ ...inputStyle, marginBottom: "20px" }} placeholder="SecurePass!2"
-                                />
-                                <button type="submit" disabled={loading} style={{
-                                    width: "100%", padding: "14px", background: "white", color: "#063970", border: "none", borderRadius: "12px", fontWeight: "700", cursor: loading ? "not-allowed" : "pointer"
-                                }}>{loading ? "Resetting..." : "Set New Password"}</button>
-                            </form>
-                        )}
-                    </div>
-                )}
             </div>
         </div>
     );
