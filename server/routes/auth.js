@@ -20,9 +20,7 @@ function validatePassword(password) {
 // Nodemailer transport setup
 // Expects environment variables for secure usage
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // Use STARTTLS
+    service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
@@ -31,7 +29,9 @@ const transporter = nodemailer.createTransport({
         // Do not fail on invalid certs
         rejectUnauthorized: false
     },
-    connectionTimeout: 10000,
+    connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    socketTimeout: 30000,
 });
 
 // 1. Login route using bcrypt
