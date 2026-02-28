@@ -6,6 +6,8 @@
   ## AI USAGE 
   AI was used to generate some of the code and content.
   Antigravity AI (Bug Fixing)
+  Calude Sonnet 4.6 (Backend error handle)
+  Gemini Flash (Frontend error handle)
   Figma AI (For UI Design)
 
   ## Running the code
