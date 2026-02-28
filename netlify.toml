@@ -2,6 +2,10 @@
   command = "npm install && npm run build"
   publish = "dist"
 
+[build.environment]
+  VITE_API_URL = "https://accbc-backend-server.onrender.com/api"
+
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
