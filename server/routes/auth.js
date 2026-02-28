@@ -20,11 +20,13 @@ function validatePassword(password) {
 // Nodemailer transport setup
 // Expects environment variables for secure usage
 const transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
@@ -115,16 +117,22 @@ router.post("/forgot-password", async (req, res) => {
             `
         };
 
-        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-            await transporter.sendMail(mailOptions);
-        } else {
-            console.warn("⚠️ Nodemailer not configured: EMAIL_USER or EMAIL_PASS missing. Printing OTP to console for debugging.");
-            console.log("OTP for", email, ":", otp);
-            // We simulate success here so dev testing is possible without emails
-            // But log a warning
-        }
+        // ALWAYS log OTP to console for Render Log recovery
+        console.log("-----------------------------------------");
+        console.log(`🔐 RECOVERY OTP FOR ${email}: ${otp}`);
+        console.log("-----------------------------------------");
 
-        res.json({ success: true, message: "OTP sent to recovery email." });
+        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+            try {
+                await transporter.sendMail(mailOptions);
+                res.json({ success: true, message: "OTP sent to recovery email." });
+            } catch (mailErr) {
+                console.error("❌ Email failed to send, but OTP is logged above:", mailErr.message);
+                res.json({ success: true, message: "OTP generated. (Check server logs if email doesn't arrive)" });
+            }
+        } else {
+            res.json({ success: true, message: "OTP generated in debug mode. Check logs." });
+        }
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Failed to send OTP email." });
