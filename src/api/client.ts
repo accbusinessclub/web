@@ -143,4 +143,12 @@ export const api = {
         const res = await request(`/alumni/${id}`, { method: "DELETE" });
         return res.json();
     },
+
+    changePassword: async (currentPassword: string, newPassword: string) => {
+        const res = await request("/auth/password", {
+            method: "PUT",
+            body: JSON.stringify({ currentPassword, newPassword }),
+        });
+        return res.json();
+    },
 };

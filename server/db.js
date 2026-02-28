@@ -133,6 +133,8 @@ async function initDB() {
         ["footer_instagram", "https://instagram.com/accbc"],
         ["footer_linkedin", "https://linkedin.com/company/accbc"],
         ["footer_email_icon", "mailto:abc@acc.edu.bd"],
+        ["admin_username", "admin"],
+        ["admin_password", "accbc2024"],
     ];
     for (const [key, value] of footerDefaults) {
         const existing = await get("SELECT value FROM settings WHERE key = ?", [key]);

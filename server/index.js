@@ -20,16 +20,7 @@ app.use("/api/hero", require("./routes/hero"));
 app.use("/api/images", require("./routes/images"));
 app.use("/api/settings", require("./routes/settings"));
 app.use("/api/alumni", require("./routes/alumni"));
-
-// Auth endpoint
-app.post("/api/auth/login", (req, res) => {
-    const { username, password } = req.body;
-    if (username === "admin" && password === "accbc202") {
-        res.json({ success: true, token: "admin-token-accbc" });
-    } else {
-        res.status(401).json({ success: false, message: "Invalid credentials" });
-    }
-});
+app.use("/api/auth", require("./routes/auth"));
 
 app.listen(PORT, () => {
     console.log(`✅ ABC Website backend running on http://localhost:${PORT}`);

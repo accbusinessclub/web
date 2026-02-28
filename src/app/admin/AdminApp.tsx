@@ -7,9 +7,10 @@ import { RegistrationEditor } from "./RegistrationEditor";
 import { FooterEditor } from "./FooterEditor";
 
 import { AlumniManager } from "./AlumniManager";
+import { SecuritySettings } from "./SecuritySettings";
 
 
-type Section = "executives" | "alumni" | "hero" | "images" | "registration" | "footer";
+type Section = "executives" | "alumni" | "hero" | "images" | "registration" | "footer" | "security";
 
 
 const NAV_ITEMS: { id: Section; label: string; icon: string }[] = [
@@ -19,6 +20,7 @@ const NAV_ITEMS: { id: Section; label: string; icon: string }[] = [
     { id: "images", label: "Image Gallery", icon: "🖼️" },
     { id: "registration", label: "Registration Link", icon: "📋" },
     { id: "footer", label: "Footer Settings", icon: "📞" },
+    { id: "security", label: "Security", icon: "🔒" },
 ];
 
 
@@ -263,6 +265,7 @@ export function AdminApp() {
                     {activeSection === "images" && <ImageManager />}
                     {activeSection === "registration" && <RegistrationEditor />}
                     {activeSection === "footer" && <FooterEditor />}
+                    {activeSection === "security" && <SecuritySettings />}
                 </div>
             </main>
         </div>
