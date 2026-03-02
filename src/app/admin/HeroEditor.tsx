@@ -130,7 +130,7 @@ export function HeroEditor() {
                 {/* Live Preview */}
                 <div style={{ position: "sticky", top: "20px" }}>
                     <h3 style={{ margin: "0 0 16px", fontSize: "18px", fontWeight: "700", color: "#1e293b" }}>
-                        Live Preview (Mobile/Desktop Feel)
+                        Live Preview
                     </h3>
                     <div style={{
                         background: "linear-gradient(135deg, #063970 0%, #084a95 100%)",
