@@ -6,7 +6,6 @@ interface HeroData {
     title_line2: string;
     subtitle: string;
     btn1_text: string;
-    btn2_text: string;
 }
 
 export function HeroEditor() {
@@ -15,7 +14,6 @@ export function HeroEditor() {
         title_line2: "",
         subtitle: "",
         btn1_text: "",
-        btn2_text: "",
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -51,14 +49,13 @@ export function HeroEditor() {
         { key: "title_line2", label: "Title — Line 2", placeholder: "e.g. Business Club" },
         { key: "subtitle", label: "Subtitle / Description", placeholder: "Empowering Tomorrow's Leaders..." },
         { key: "btn1_text", label: "Primary Button Text", placeholder: "e.g. Join the Club" },
-        { key: "btn2_text", label: "Secondary Button Text", placeholder: "e.g. Explore Events" },
     ] as const;
 
     if (loading) return <div style={{ textAlign: "center", padding: "60px", color: "#64748b" }}>Loading...</div>;
     if (error) return <div style={{ textAlign: "center", padding: "60px", color: "#ef4444" }}>{error}</div>;
 
     return (
-        <div style={{ maxWidth: "900px" }}>
+        <div style={{ maxWidth: "1000px" }}>
             {/* Toast */}
             {toast && (
                 <div style={{
@@ -68,7 +65,7 @@ export function HeroEditor() {
                 }}>{toast}</div>
             )}
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "24px", alignItems: "start" }}>
                 {/* Form */}
                 <div style={{
                     background: "white", borderRadius: "16px",
@@ -131,42 +128,50 @@ export function HeroEditor() {
                 </div>
 
                 {/* Live Preview */}
-                <div>
+                <div style={{ position: "sticky", top: "20px" }}>
                     <h3 style={{ margin: "0 0 16px", fontSize: "18px", fontWeight: "700", color: "#1e293b" }}>
-                        Live Preview
+                        Live Preview (Mobile/Desktop Feel)
                     </h3>
                     <div style={{
                         background: "linear-gradient(135deg, #063970 0%, #084a95 100%)",
-                        borderRadius: "16px", padding: "40px 28px", textAlign: "center",
+                        borderRadius: "16px", padding: "60px 28px", textAlign: "center",
                         color: "white", boxShadow: "0 8px 30px rgba(6,57,112,0.3)",
+                        minHeight: "400px", display: "flex", flexDirection: "column", justifyContent: "center"
                     }}>
-                        <h1 style={{ fontSize: "26px", fontWeight: "700", margin: "0 0 6px", lineHeight: 1.3 }}>
+                        <h1 style={{ fontSize: "32px", fontWeight: "700", margin: "0 0 8px", lineHeight: 1.2 }}>
                             {form.title_line1 || "Title Line 1"}
+                            <br />
+                            <span style={{ display: "block", marginTop: "8px" }}>{form.title_line2 || "Title Line 2"}</span>
                         </h1>
-                        <h1 style={{ fontSize: "26px", fontWeight: "700", margin: "0 0 16px", lineHeight: 1.3 }}>
-                            {form.title_line2 || "Title Line 2"}
-                        </h1>
-                        <p style={{ fontSize: "14px", opacity: 0.85, margin: "0 0 24px", lineHeight: 1.5 }}>
-                            {form.subtitle || "Subtitle text..."}
+                        <p style={{
+                            fontSize: "18px",
+                            margin: "24px 0 32px",
+                            lineHeight: "2.2",
+                            maxWidth: "100%"
+                        }}>
+                            <span
+                                style={{
+                                    backgroundColor: "#eab308", // tailwind yellow-500
+                                    color: "white",
+                                    padding: "4px 8px",
+                                    WebkitBoxDecorationBreak: "clone",
+                                    boxDecorationBreak: "clone",
+                                    display: "inline",
+                                }}
+                            >
+                                {form.subtitle || "Subtitle text..."}
+                            </span>
                         </p>
-                        <div style={{ display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" }}>
+                        <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                             <div style={{
-                                background: "white", color: "#063970", padding: "10px 20px",
-                                borderRadius: "8px", fontSize: "14px", fontWeight: "700",
+                                background: "white", color: "#063970", padding: "12px 28px",
+                                borderRadius: "8px", fontSize: "15px", fontWeight: "700",
+                                boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
                             }}>
                                 {form.btn1_text || "Button 1"}
                             </div>
-                            <div style={{
-                                background: "transparent", border: "2px solid white", color: "white",
-                                padding: "10px 20px", borderRadius: "8px", fontSize: "14px", fontWeight: "700",
-                            }}>
-                                {form.btn2_text || "Button 2"}
-                            </div>
                         </div>
                     </div>
-                    <p style={{ marginTop: "12px", color: "#94a3b8", fontSize: "13px", textAlign: "center" }}>
-                        Preview updates as you type
-                    </p>
                 </div>
             </div>
         </div>
