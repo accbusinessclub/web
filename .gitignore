@@ -2,3 +2,10 @@ node_modules
 
 # Local Netlify folder
 .netlify
+.env
+.env.local
+*.sqlite
+uploads/
+dist/
+/server/uploads/
+/server/database.sqlite

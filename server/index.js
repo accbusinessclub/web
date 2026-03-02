@@ -25,6 +25,5 @@ app.use("/api/auth", require("./routes/auth"));
 
 app.listen(PORT, () => {
     console.log(`✅ ABC Website backend running on http://localhost:${PORT}`);
-    console.log(`📦 Database: server/database.sqlite`);
-    console.log(`🖼️  Uploads: server/uploads/`);
+    console.log(`📦 Database: PostgreSQL (Neon)`);
 });
