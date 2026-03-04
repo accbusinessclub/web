@@ -26,14 +26,24 @@ export function Navbar() {
 
   const handleNavClick = (href: string, isAnchor: boolean) => {
     setIsMobileMenuOpen(false);
+
     if (isAnchor) {
       const sectionId = href.split("#")[1];
-      if (window.location.pathname === "/") {
-        const element = document.getElementById(sectionId);
-        element?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        window.location.href = href;
-      }
+
+      // Delay scroll slightly so the mobile menu close animation finishes
+      // and the page layout re-settles before we try to scroll
+      setTimeout(() => {
+        if (window.location.pathname === "/" || window.location.pathname === "") {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            const navHeight = 64; // height of the fixed navbar in px
+            const top = element.getBoundingClientRect().top + window.scrollY - navHeight;
+            window.scrollTo({ top, behavior: "smooth" });
+          }
+        } else {
+          window.location.href = href;
+        }
+      }, 150);
     } else {
       window.location.href = href;
     }
