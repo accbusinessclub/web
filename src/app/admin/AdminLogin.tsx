@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { api } from "../../api/client";
 import { Eye, EyeOff } from "lucide-react";
@@ -8,23 +8,68 @@ export function AdminLogin() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [attemptsLeft, setAttemptsLeft] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    // Lockout countdown state
+    const [lockoutSec, setLockoutSec] = useState(0);
+    const lockoutTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    const startLockout = (seconds: number) => {
+        setLockoutSec(seconds);
+        setAttemptsLeft(null);
+        if (lockoutTimer.current) clearInterval(lockoutTimer.current);
+        lockoutTimer.current = setInterval(() => {
+            setLockoutSec((prev) => {
+                if (prev <= 1) {
+                    clearInterval(lockoutTimer.current!);
+                    lockoutTimer.current = null;
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    };
+
+    useEffect(() => () => { if (lockoutTimer.current) clearInterval(lockoutTimer.current); }, []);
+
+    const fmtCountdown = (sec: number) => {
+        const m = Math.floor(sec / 60).toString().padStart(2, "0");
+        const s = (sec % 60).toString().padStart(2, "0");
+        return `${m}:${s}`;
+    };
+
+    const isLocked = lockoutSec > 0;
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (isLocked) return;
         setLoading(true);
         setError("");
+        setAttemptsLeft(null);
         try {
             const res = await api.login(username, password);
             if (res.success) {
                 sessionStorage.setItem("admin_token", res.token);
                 navigate("/admin");
+            } else if (res.retryAfterSec) {
+                // Locked out by server
+                startLockout(res.retryAfterSec);
+                setError("");
             } else {
                 setError("Invalid username or password");
+                if (typeof res.attemptsLeft === "number") {
+                    setAttemptsLeft(res.attemptsLeft);
+                }
             }
-        } catch {
-            setError("Cannot connect to server. Make sure the backend is running on port 3001.");
+        } catch (err: any) {
+            // Handle 429 from fetch/throw path too
+            if (err?.status === 429 || err?.retryAfterSec) {
+                startLockout(err.retryAfterSec ?? 900);
+            } else {
+                setError("Cannot connect to server. Make sure the backend is running on port 3001.");
+            }
         } finally {
             setLoading(false);
         }
@@ -178,7 +223,50 @@ export function AdminLogin() {
                         </div>
                     </div>
 
-                    {error && (
+                    {/* Lockout banner */}
+                    {isLocked && (
+                        <div
+                            style={{
+                                background: "rgba(239,68,68,0.18)",
+                                border: "1px solid rgba(239,68,68,0.5)",
+                                borderRadius: "10px",
+                                padding: "14px 16px",
+                                color: "#fca5a5",
+                                fontSize: "14px",
+                                marginBottom: "20px",
+                                textAlign: "center",
+                                lineHeight: 1.6,
+                            }}
+                        >
+                            🔒 <strong>Account temporarily locked</strong><br />
+                            Too many failed attempts. Try again in{" "}
+                            <span style={{ fontWeight: 700, fontSize: "16px", fontVariantNumeric: "tabular-nums" }}>
+                                {fmtCountdown(lockoutSec)}
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Attempts-left warning */}
+                    {!isLocked && attemptsLeft !== null && attemptsLeft > 0 && (
+                        <div
+                            style={{
+                                background: "rgba(251,146,60,0.18)",
+                                border: "1px solid rgba(251,146,60,0.5)",
+                                borderRadius: "10px",
+                                padding: "12px 16px",
+                                color: "#fdba74",
+                                fontSize: "14px",
+                                marginBottom: "16px",
+                                textAlign: "center",
+                            }}
+                        >
+                            ⚠️ {error || "Invalid credentials"} &mdash;{" "}
+                            <strong>{attemptsLeft} attempt{attemptsLeft !== 1 ? "s" : ""} remaining</strong> before lockout
+                        </div>
+                    )}
+
+                    {/* Generic error (no attempts info) */}
+                    {!isLocked && error && attemptsLeft === null && (
                         <div
                             style={{
                                 background: "rgba(239,68,68,0.2)",
@@ -197,22 +285,22 @@ export function AdminLogin() {
 
                     <button
                         type="submit"
-                        disabled={loading}
+                        disabled={loading || isLocked}
                         style={{
                             width: "100%",
                             padding: "15px",
-                            background: loading ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.9)",
-                            color: "#063970",
+                            background: loading || isLocked ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.9)",
+                            color: loading || isLocked ? "rgba(255,255,255,0.5)" : "#063970",
                             border: "none",
                             borderRadius: "12px",
                             fontSize: "16px",
                             fontWeight: "700",
-                            cursor: loading ? "not-allowed" : "pointer",
+                            cursor: loading || isLocked ? "not-allowed" : "pointer",
                             transition: "all 0.2s",
                             letterSpacing: "0.3px",
                         }}
                     >
-                        {loading ? "Signing in..." : "Sign In"}
+                        {loading ? "Signing in..." : isLocked ? `Locked — ${fmtCountdown(lockoutSec)}` : "Sign In"}
                     </button>
                 </form>
             </div>

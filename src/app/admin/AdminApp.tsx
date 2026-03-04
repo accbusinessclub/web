@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { ExecManager } from "./ExecManager";
 import { HeroEditor } from "./HeroEditor";
@@ -29,9 +29,86 @@ export function AdminApp() {
     const [activeSection, setActiveSection] = useState<Section>("executives");
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
+    // ── Auto-logout after 15 min inactivity ──────────────────────────────────
+    const INACTIVE_MS = 15 * 60 * 1000;  // 15 minutes
+    const WARN_BEFORE_MS = 60 * 1000;       // show warning 60 s before logout
+    const POLL_MS = 30 * 1000;       // check every 30 s
+
+    const [showWarning, setShowWarning] = useState(false);
+    const [warnCountdown, setWarnCountdown] = useState(60);
+    const warnTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    const resetActivity = useCallback(() => {
+        sessionStorage.setItem("admin_last_activity", Date.now().toString());
+    }, []);
+
+    // Record activity on mount + on user interactions (throttled via lastSet ref)
+    const lastSetRef = useRef(0);
+    useEffect(() => {
+        resetActivity();
+        const handler = () => {
+            const now = Date.now();
+            if (now - lastSetRef.current > 10_000) {
+                lastSetRef.current = now;
+                resetActivity();
+            }
+        };
+        window.addEventListener("mousemove", handler);
+        window.addEventListener("keydown", handler);
+        window.addEventListener("touchstart", handler);
+        window.addEventListener("scroll", handler, true);
+        return () => {
+            window.removeEventListener("mousemove", handler);
+            window.removeEventListener("keydown", handler);
+            window.removeEventListener("touchstart", handler);
+            window.removeEventListener("scroll", handler, true);
+        };
+    }, [resetActivity]);
+
+    // Poll for inactivity
+    useEffect(() => {
+        const poll = setInterval(() => {
+            const last = parseInt(sessionStorage.getItem("admin_last_activity") || "0", 10);
+            const idle = Date.now() - last;
+            if (idle >= INACTIVE_MS) {
+                handleLogout();
+            } else if (idle >= INACTIVE_MS - WARN_BEFORE_MS && !showWarning) {
+                setShowWarning(true);
+                setWarnCountdown(Math.round((INACTIVE_MS - idle) / 1000));
+            }
+        }, POLL_MS);
+        return () => clearInterval(poll);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showWarning]);
+
+    // Warning modal countdown
+    useEffect(() => {
+        if (!showWarning) return;
+        setWarnCountdown(60);
+        warnTimerRef.current = setInterval(() => {
+            setWarnCountdown((prev) => {
+                if (prev <= 1) {
+                    clearInterval(warnTimerRef.current!);
+                    handleLogout();
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+        return () => { if (warnTimerRef.current) clearInterval(warnTimerRef.current); };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showWarning]);
+
+    const stayLoggedIn = () => {
+        if (warnTimerRef.current) clearInterval(warnTimerRef.current);
+        setShowWarning(false);
+        resetActivity();
+    };
+    // ─────────────────────────────────────────────────────────────────────────
 
     const handleLogout = () => {
         sessionStorage.removeItem("admin_token");
+        sessionStorage.removeItem("admin_last_activity");
         navigate("/admin/login");
     };
 
@@ -48,6 +125,68 @@ export function AdminApp() {
                 background: "#f1f5f9",
             }}
         >
+            {/* ── Inactivity Warning Modal ───────────────────────────────────── */}
+            {showWarning && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0,0,0,0.55)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 1000,
+                    }}
+                >
+                    <div
+                        style={{
+                            background: "white",
+                            borderRadius: "20px",
+                            padding: "40px 36px",
+                            maxWidth: "400px",
+                            width: "90%",
+                            textAlign: "center",
+                            boxShadow: "0 25px 60px rgba(0,0,0,0.3)",
+                        }}
+                    >
+                        <div style={{ fontSize: "48px", marginBottom: "12px" }}>⏱️</div>
+                        <h2 style={{ margin: "0 0 8px", fontSize: "22px", fontWeight: "700", color: "#1e293b" }}>
+                            Session Expiring
+                        </h2>
+                        <p style={{ color: "#64748b", fontSize: "15px", margin: "0 0 24px" }}>
+                            You'll be logged out due to inactivity in
+                        </p>
+                        <div
+                            style={{
+                                fontSize: "52px",
+                                fontWeight: "800",
+                                color: warnCountdown <= 10 ? "#ef4444" : "#f59e0b",
+                                fontVariantNumeric: "tabular-nums",
+                                marginBottom: "28px",
+                                transition: "color 0.3s",
+                            }}
+                        >
+                            {warnCountdown}s
+                        </div>
+                        <button
+                            onClick={stayLoggedIn}
+                            style={{
+                                width: "100%",
+                                padding: "14px",
+                                background: "#063970",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "12px",
+                                fontSize: "16px",
+                                fontWeight: "700",
+                                cursor: "pointer",
+                            }}
+                        >
+                            ✅ Stay Logged In
+                        </button>
+                    </div>
+                </div>
+            )}
             {/* Sidebar */}
             <aside
                 style={{

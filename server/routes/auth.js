@@ -3,6 +3,48 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const { run, get } = require("../db");
 
+// ─── In-memory brute-force rate limiter ───────────────────────────────────────
+const MAX_ATTEMPTS = 3;          // lockout after this many failures
+const WINDOW_MS = 15 * 60 * 1000; // 15-minute window
+
+// Map<ip, { count: number, firstFail: number }>
+const loginAttempts = new Map();
+
+function getRateLimitInfo(ip) {
+    const now = Date.now();
+    const entry = loginAttempts.get(ip);
+
+    if (!entry) return { blocked: false, remaining: MAX_ATTEMPTS };
+
+    // Window expired → reset
+    if (now - entry.firstFail >= WINDOW_MS) {
+        loginAttempts.delete(ip);
+        return { blocked: false, remaining: MAX_ATTEMPTS };
+    }
+
+    if (entry.count >= MAX_ATTEMPTS) {
+        const retryAfterMs = WINDOW_MS - (now - entry.firstFail);
+        return { blocked: true, retryAfterSec: Math.ceil(retryAfterMs / 1000) };
+    }
+
+    return { blocked: false, remaining: MAX_ATTEMPTS - entry.count };
+}
+
+function recordFailure(ip) {
+    const now = Date.now();
+    const entry = loginAttempts.get(ip);
+    if (!entry || Date.now() - entry.firstFail >= WINDOW_MS) {
+        loginAttempts.set(ip, { count: 1, firstFail: now });
+    } else {
+        entry.count += 1;
+    }
+}
+
+function resetAttempts(ip) {
+    loginAttempts.delete(ip);
+}
+// ──────────────────────────────────────────────────────────────────────────────
+
 // Helper function for password strength validation
 function validatePassword(password) {
     if (password.length < 8) return false;
@@ -12,8 +54,19 @@ function validatePassword(password) {
     return hasUpper && hasLower && hasSpecialOrDigit;
 }
 
-// 1. Login route using bcrypt
+// 1. Login route using bcrypt + rate limiting
 router.post("/login", async (req, res) => {
+    const ip = req.ip || req.connection.remoteAddress || "unknown";
+    const info = getRateLimitInfo(ip);
+
+    if (info.blocked) {
+        return res.status(429).json({
+            success: false,
+            message: `Too many failed attempts. Try again in ${info.retryAfterSec} seconds.`,
+            retryAfterSec: info.retryAfterSec,
+        });
+    }
+
     try {
         const { username, password } = req.body;
         const dbUser = await get("SELECT value FROM settings WHERE key = 'admin_username'");
@@ -24,14 +77,29 @@ router.post("/login", async (req, res) => {
         }
 
         if (dbUser.value === username) {
-            // Compare the plain text password from request with hashed password in DB
             const isMatch = await bcrypt.compare(password, dbPass.value);
             if (isMatch) {
+                resetAttempts(ip);
                 return res.json({ success: true, token: "admin-token-accbc" });
             }
         }
 
-        res.status(401).json({ success: false, message: "Invalid credentials" });
+        recordFailure(ip);
+        const updatedInfo = getRateLimitInfo(ip);
+
+        if (updatedInfo.blocked) {
+            return res.status(429).json({
+                success: false,
+                message: `Too many failed attempts. Try again in ${updatedInfo.retryAfterSec} seconds.`,
+                retryAfterSec: updatedInfo.retryAfterSec,
+            });
+        }
+
+        res.status(401).json({
+            success: false,
+            message: "Invalid credentials",
+            attemptsLeft: updatedInfo.remaining,
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
