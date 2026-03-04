@@ -44,13 +44,21 @@ export function Footer() {
   useEffect(() => {
     Promise.all([
       fetchSetting("footer_phone", DEFAULTS.phone),
+      fetchSetting("contact_email", ""), // check new contact_email first
       fetchSetting("footer_email", DEFAULTS.email),
       fetchSetting("footer_facebook", DEFAULTS.facebook),
       fetchSetting("footer_instagram", DEFAULTS.instagram),
       fetchSetting("footer_linkedin", DEFAULTS.linkedin),
       fetchSetting("footer_email_icon", DEFAULTS.emailIcon),
-    ]).then(([phone, email, facebook, instagram, linkedin, emailIcon]) => {
-      setData({ phone, email, facebook, instagram, linkedin, emailIcon });
+    ]).then(([phone, contactEmail, footerEmail, facebook, instagram, linkedin, emailIcon]) => {
+      setData({
+        phone,
+        email: contactEmail || footerEmail, // Prioritize contactEmail
+        facebook,
+        instagram,
+        linkedin,
+        emailIcon
+      });
     });
   }, []);
 

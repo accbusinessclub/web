@@ -3,12 +3,32 @@ import { UserPlus, CheckCircle } from "lucide-react";
 
 export function Join() {
   const [formLink, setFormLink] = useState("https://forms.google.com/");
+  const [contactEmail, setContactEmail] = useState("info@accbc.edu.bd");
+
+  const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
+
+  async function fetchSetting(key: string, fallback: string): Promise<string> {
+    try {
+      const res = await fetch(`${BASE_URL}/settings/${key}`);
+      if (!res.ok) return fallback;
+      const data = await res.json();
+      return data.value || fallback;
+    } catch {
+      return fallback;
+    }
+  }
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3001/api"}/settings/registration_link`)
-      .then((r) => r.json())
-      .then((data) => { if (data && data.value) setFormLink(data.value); })
-      .catch(() => { /* use default */ });
+    fetchSetting("registration_link", "https://forms.google.com/").then(setFormLink);
+
+    // Prefer contact_email; fall back to footer_email
+    fetchSetting("contact_email", "").then((email) => {
+      if (email) {
+        setContactEmail(email);
+      } else {
+        fetchSetting("footer_email", "info@accbc.edu.bd").then(setContactEmail);
+      }
+    });
   }, []);
 
   const benefits = [
@@ -71,8 +91,8 @@ export function Join() {
           <div className="mt-8 text-center text-gray-600">
             <p className="text-sm">
               For any queries, please contact us at{" "}
-              <a href="mailto:info@accbc.edu.bd" className="text-[#063970] hover:underline">
-                info@accbc.edu.bd
+              <a href={`mailto:${contactEmail}`} className="text-[#063970] hover:underline">
+                {contactEmail}
               </a>
             </p>
           </div>
