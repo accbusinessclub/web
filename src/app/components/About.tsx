@@ -6,25 +6,25 @@ export function About() {
       icon: Target,
       title: "Mission",
       description:
-        "To cultivate entrepreneurial mindsets and develop business acumen among students through practical learning experiences and professional networking.",
+        "To nurture members’ skills and professional growth through interactive sessions, business learning, mentorship, competitions and collaborative activities that prepare students for leadership and real-world challenges.",
     },
     {
       icon: Eye,
       title: "Vision",
       description:
-        "To be the leading student business organization that empowers future entrepreneurs and business leaders with skills, knowledge, and opportunities.",
+        "To develop competent leaders, grow and support business enthusiasts and critical thinkers through collaboration, discipline and shared learning, while fostering harmony and leadership continuity between senior and junior members.",
     },
     {
       icon: Award,
       title: "Achievements",
       description:
-        "Successfully organized 200+ business events, hosted industry leaders, and connected 500+ students with career opportunities in the business sector.",
+        "Successfully organized 50+ business events, hosted industry leaders, and connected 500+ students with career opportunities in the business sector.",
     },
     {
       icon: Calendar,
       title: "Established",
       description:
-        "Founded in 2010, ACCBC has been at the forefront of business education and professional development for Adamjee Cantonment College students.",
+        "Founded in 2015, ACCBC has been at the forefront of business education and professional development for Adamjee Cantonment College students.",
     },
   ];
 
