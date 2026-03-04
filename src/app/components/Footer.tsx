@@ -77,8 +77,7 @@ export function Footer() {
           <div className="text-center md:text-left">
             <h3 className="text-2xl mb-4">ACCBC</h3>
             <p className="text-white/80 text-sm">
-              Adamjee Cantonment College Business Club - Empowering tomorrow's
-              business leaders through innovation and collaboration.
+              Possibilities are Infinite, Those Who Dare Win.
             </p>
             {/* Contact Info */}
             {(data.phone || data.email) && (
