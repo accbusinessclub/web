@@ -24,7 +24,14 @@ export function Contact() {
   const [phone, setPhone] = useState("+880 1XXX-XXXXXX");
 
   useEffect(() => {
-    fetchSetting("footer_email", "info@accbc.edu.bd").then(setEmail);
+    // Prefer contact_email; fall back to footer_email for backward compatibility
+    fetchSetting("contact_email", "").then((contactEmail) => {
+      if (contactEmail) {
+        setEmail(contactEmail);
+      } else {
+        fetchSetting("footer_email", "info@accbc.edu.bd").then(setEmail);
+      }
+    });
     fetchSetting("footer_phone", "+880 1XXX-XXXXXX").then(setPhone);
   }, []);
 

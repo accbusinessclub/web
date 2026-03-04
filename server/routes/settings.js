@@ -6,7 +6,7 @@ const { run, get } = require("../db");
 router.get("/:key", async (req, res) => {
     try {
         const row = await get("SELECT value FROM settings WHERE key = ?", [req.params.key]);
-        if (!row) return res.status(404).json({ error: "Setting not found" });
+        if (!row) return res.json({ key: req.params.key, value: "" });
         res.json({ key: req.params.key, value: row.value });
     } catch (err) {
         res.status(500).json({ error: err.message });

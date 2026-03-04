@@ -19,7 +19,7 @@ interface Fields {
 }
 
 const DEFAULTS: Fields = {
-    footer_phone: "",
+    footer_phone: "+8801969426245",
     footer_email: "abc@acc.edu.bd",
     footer_facebook: "https://facebook.com/accbc",
     footer_instagram: "https://instagram.com/accbc",
@@ -184,7 +184,7 @@ export function FooterEditor() {
                         label="Phone Number"
                         value={fields.footer_phone}
                         onChange={handleChange("footer_phone")}
-                        placeholder="+880 1234-567890"
+                        placeholder="+8801969426245"
                         type="tel"
                     />
                     <Field
