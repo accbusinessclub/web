@@ -38,10 +38,10 @@ export function Moderator() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl text-[#063970] mb-4">
-                        Faculty Moderators
+                        Club Moderators
                     </h2>
                     <p className="text-lg text-[#919ea7] max-w-2xl mx-auto">
-                        The dedicated faculty members who guide and oversee the club's activities
+                        The dedicated teacher members who guide and oversee the club's activities
                     </p>
                 </div>
 
