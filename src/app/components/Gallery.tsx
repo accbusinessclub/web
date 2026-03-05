@@ -11,12 +11,12 @@ interface GalleryImage {
 }
 
 const DEFAULT_IMAGES: GalleryImage[] = [
-  { id: "d1", url: "https://images.unsplash.com/photo-1770364292936-1800aa621b3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", caption: "Annual Business Summit 2025", filename: null, sort_order: 0 },
-  { id: "d2", url: "https://images.unsplash.com/photo-1747674148491-51f8a5c723db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", caption: "Leadership Seminar", filename: null, sort_order: 1 },
-  { id: "d3", url: "https://images.unsplash.com/photo-1768796370407-6d36619e7d6d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", caption: "Workshop on Entrepreneurship", filename: null, sort_order: 2 },
-  { id: "d4", url: "https://images.unsplash.com/photo-1696798559340-ad395e783816?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", caption: "Networking Event", filename: null, sort_order: 3 },
-  { id: "d5", url: "https://images.unsplash.com/photo-1762968269894-1d7e1ce8894e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", caption: "Guest Speaker Session", filename: null, sort_order: 4 },
-  { id: "d6", url: "https://images.unsplash.com/photo-1758270705518-b61b40527e76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", caption: "Team Discussion", filename: null, sort_order: 5 },
+  { id: "d1", url: "https://images.unsplash.com/photo-1770364292936-1800aa621b3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", caption: "Annual Business Summit 2025", filename: null, sort_order: 0 },
+  { id: "d2", url: "https://images.unsplash.com/photo-1747674148491-51f8a5c723db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", caption: "Leadership Seminar", filename: null, sort_order: 1 },
+  { id: "d3", url: "https://images.unsplash.com/photo-1768796370407-6d36619e7d6d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", caption: "Workshop on Entrepreneurship", filename: null, sort_order: 2 },
+  { id: "d4", url: "https://images.unsplash.com/photo-1696798559340-ad395e783816?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", caption: "Networking Event", filename: null, sort_order: 3 },
+  { id: "d5", url: "https://images.unsplash.com/photo-1762968269894-1d7e1ce8894e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", caption: "Guest Speaker Session", filename: null, sort_order: 4 },
+  { id: "d6", url: "https://images.unsplash.com/photo-1758270705518-b61b40527e76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", caption: "Team Discussion", filename: null, sort_order: 5 },
 ];
 
 function getFullUrl(url: string) {
@@ -101,6 +101,8 @@ export function Gallery() {
               <img
                 src={getFullUrl(image.url)}
                 alt={image.caption}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =

@@ -143,7 +143,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/20 pt-8 text-center text-sm text-white/80">
           <p>© {currentYear} Adamjee Cantonment College Business Club. All rights reserved.</p>
-          <p className="mt-2"><a href="https://github.com/sayeedunnur">Developer Info</a></p>
+          {/* <p className="mt-2"><a href="https://github.com/sayeedunnur">Developer Info</a></p> */}
         </div>
       </div>
     </footer>

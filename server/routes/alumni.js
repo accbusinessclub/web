@@ -56,4 +56,17 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+// PUT /reorder/batch - update sort order for a group of alumni
+router.put("/reorder/batch", async (req, res) => {
+    try {
+        const { order } = req.body; // [{ id, sort_order }]
+        for (const item of order) {
+            await run("UPDATE alumni SET sort_order = ? WHERE id = ?", [item.sort_order, item.id]);
+        }
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;

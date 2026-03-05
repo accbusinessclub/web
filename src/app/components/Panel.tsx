@@ -11,12 +11,12 @@ interface Executive {
 }
 
 const DEFAULT_PANEL_MEMBERS: Executive[] = [
-  { id: "1", name: "Fahim Ahmed", member_id: "ACC-2023-001", designation: "President", image_url: "https://images.unsplash.com/photo-1623880840102-7df0a9f3545b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", sort_order: 1 },
-  { id: "2", name: "Sadia Rahman", member_id: "ACC-2023-012", designation: "Vice President", image_url: "https://images.unsplash.com/photo-1765648636207-22c892e8fae9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", sort_order: 2 },
-  { id: "3", name: "Rashed Khan", member_id: "ACC-2023-024", designation: "General Secretary", image_url: "https://images.unsplash.com/photo-1584940120505-117038d90b05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", sort_order: 3 },
-  { id: "4", name: "Ayesha Sultana", member_id: "ACC-2023-035", designation: "Finance Secretary", image_url: "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", sort_order: 4 },
-  { id: "5", name: "Nafia Hasan", member_id: "ACC-2023-047", designation: "Event Coordinator", image_url: "https://images.unsplash.com/photo-1589220286904-3dcef62c68ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", sort_order: 5 },
-  { id: "6", name: "Tanvir Hossain", member_id: "ACC-2023-058", designation: "Media & PR Head", image_url: "https://images.unsplash.com/photo-1770894807442-108cc33c0a7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", sort_order: 6 },
+  { id: "1", name: "Fahim Ahmed", member_id: "ACC-2023-001", designation: "President", image_url: "https://images.unsplash.com/photo-1623880840102-7df0a9f3545b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200", sort_order: 1 },
+  { id: "2", name: "Sadia Rahman", member_id: "ACC-2023-012", designation: "Vice President", image_url: "https://images.unsplash.com/photo-1765648636207-22c892e8fae9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200", sort_order: 2 },
+  { id: "3", name: "Rashed Khan", member_id: "ACC-2023-024", designation: "General Secretary", image_url: "https://images.unsplash.com/photo-1584940120505-117038d90b05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200", sort_order: 3 },
+  { id: "4", name: "Ayesha Sultana", member_id: "ACC-2023-035", designation: "Finance Secretary", image_url: "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200", sort_order: 4 },
+  { id: "5", name: "Nafia Hasan", member_id: "ACC-2023-047", designation: "Event Coordinator", image_url: "https://images.unsplash.com/photo-1589220286904-3dcef62c68ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200", sort_order: 5 },
+  { id: "6", name: "Tanvir Hossain", member_id: "ACC-2023-058", designation: "Media & PR Head", image_url: "https://images.unsplash.com/photo-1770894807442-108cc33c0a7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200", sort_order: 6 },
 ];
 
 export function Panel() {
@@ -80,6 +80,8 @@ export function Panel() {
                   <ImageWithFallback
                     src={member.image_url}
                     alt={member.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                 </div>

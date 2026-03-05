@@ -143,6 +143,13 @@ export const api = {
         const res = await request(`/alumni/${id}`, { method: "DELETE" });
         return res.json();
     },
+    reorderAlumni: async (order: { id: string; sort_order: number }[]) => {
+        const res = await request("/alumni/reorder/batch", {
+            method: "PUT",
+            body: JSON.stringify({ order }),
+        });
+        return res.json();
+    },
 
     changePassword: async (currentPassword: string, newPassword: string) => {
         const res = await request("/auth/password", {
