@@ -5,17 +5,19 @@ import { HeroEditor } from "./HeroEditor";
 import { ImageManager } from "./ImageManager";
 import { RegistrationEditor } from "./RegistrationEditor";
 import { FooterEditor } from "./FooterEditor";
-
 import { AlumniManager } from "./AlumniManager";
 import { SecuritySettings } from "./SecuritySettings";
+import { TeacherManager } from "./TeacherManager";
+import { AdvisorManager } from "./AdvisorManager";
 
-
-type Section = "executives" | "alumni" | "hero" | "images" | "registration" | "footer" | "security";
+type Section = "executives" | "alumni" | "teachers" | "advisors" | "hero" | "images" | "registration" | "footer" | "security";
 
 
 const NAV_ITEMS: { id: Section; label: string; icon: string }[] = [
     { id: "executives", label: "Executive Panel", icon: "👥" },
     { id: "alumni", label: "Alumni Panel", icon: "🎓" },
+    { id: "teachers", label: "Teachers Panel", icon: "👨‍🏫" },
+    { id: "advisors", label: "Advisor Panel", icon: "🏅" },
     { id: "hero", label: "Hero Section", icon: "✏️" },
     { id: "images", label: "Image Gallery", icon: "🖼️" },
     { id: "registration", label: "Registration Link", icon: "📋" },
@@ -400,6 +402,8 @@ export function AdminApp() {
                 <div style={{ padding: "32px", flex: 1 }}>
                     {activeSection === "executives" && <ExecManager />}
                     {activeSection === "alumni" && <AlumniManager />}
+                    {activeSection === "teachers" && <TeacherManager />}
+                    {activeSection === "advisors" && <AdvisorManager />}
                     {activeSection === "hero" && <HeroEditor />}
                     {activeSection === "images" && <ImageManager />}
                     {activeSection === "registration" && <RegistrationEditor />}

@@ -2,6 +2,7 @@ import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { About } from "./components/About";
 import { Panel } from "./components/Panel";
+import { Moderator } from "./components/Moderator";
 import { Events } from "./components/Events";
 import { Gallery } from "./components/Gallery";
 import { Join } from "./components/Join";
@@ -15,6 +16,7 @@ export function HomePage() {
             <Hero />
             <About />
             <Panel />
+            <Moderator />
             <Events />
             <Gallery />
             <Join />

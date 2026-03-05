@@ -91,6 +91,24 @@ async function initDB() {
             created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
         )`);
 
+        await run(`CREATE TABLE IF NOT EXISTS teachers (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            designation TEXT NOT NULL DEFAULT '',
+            department TEXT NOT NULL DEFAULT '',
+            role TEXT NOT NULL DEFAULT 'teacher',
+            image_url TEXT DEFAULT '',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        )`);
+
+        await run(`CREATE TABLE IF NOT EXISTS advisors (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            designation TEXT NOT NULL DEFAULT '',
+            image_url TEXT DEFAULT '',
+            sort_order INTEGER NOT NULL DEFAULT 0
+        )`);
+
         // Check if sort_order column exists in images (PostgreSQL specific check)
         try {
             await run("ALTER TABLE images ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0");

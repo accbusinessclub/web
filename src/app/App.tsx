@@ -4,6 +4,8 @@ import { AdminApp } from "./admin/AdminApp";
 import { HomePage } from "./HomePage";
 import { AlumniPage } from "./AlumniPage";
 import { NotFoundPage } from "./NotFoundPage";
+import { TeachersPage } from "./TeachersPage";
+import { AdvisorsPage } from "./AdvisorsPage";
 
 function AdminGuard() {
   const token = sessionStorage.getItem("admin_token");
@@ -16,6 +18,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/alumni" element={<AlumniPage />} />
+        <Route path="/teachers" element={<TeachersPage />} />
+        <Route path="/advisors" element={<AdvisorsPage />} />
         <Route path="/admin" element={<AdminGuard />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="*" element={<NotFoundPage />} />

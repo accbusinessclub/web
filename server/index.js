@@ -22,6 +22,8 @@ app.use("/api/images", require("./routes/images"));
 app.use("/api/settings", require("./routes/settings"));
 app.use("/api/alumni", require("./routes/alumni"));
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/teachers", require("./routes/teachers"));
+app.use("/api/advisors", require("./routes/advisors"));
 
 app.listen(PORT, () => {
     console.log(`✅ ABC Website backend running on http://localhost:${PORT}`);

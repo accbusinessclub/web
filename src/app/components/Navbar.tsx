@@ -18,6 +18,8 @@ export function Navbar() {
     { name: "Home", href: "/", isAnchor: false },
     { name: "About", href: "/#about", isAnchor: true },
     { name: "Panel", href: "/#panel", isAnchor: true },
+    { name: "Teachers", href: "/teachers", isAnchor: false },
+    { name: "Advisors", href: "/advisors", isAnchor: false },
     { name: "Gallery", href: "/#gallery", isAnchor: true },
     { name: "Alumni", href: "/alumni", isAnchor: false },
     { name: "Join", href: "/#join", isAnchor: true },

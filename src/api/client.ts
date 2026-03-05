@@ -151,6 +151,50 @@ export const api = {
         return res.json();
     },
 
+    // Teachers
+    getTeachers: async () => {
+        const res = await request("/teachers");
+        return res.json();
+    },
+    addTeacher: async (data: object) => {
+        const res = await request("/teachers", { method: "POST", body: JSON.stringify(data) });
+        return res.json();
+    },
+    updateTeacher: async (id: string, data: object) => {
+        const res = await request(`/teachers/${id}`, { method: "PUT", body: JSON.stringify(data) });
+        return res.json();
+    },
+    deleteTeacher: async (id: string) => {
+        const res = await request(`/teachers/${id}`, { method: "DELETE" });
+        return res.json();
+    },
+    reorderTeachers: async (order: { id: string; sort_order: number }[]) => {
+        const res = await request("/teachers/reorder/batch", { method: "PUT", body: JSON.stringify({ order }) });
+        return res.json();
+    },
+
+    // Advisors
+    getAdvisors: async () => {
+        const res = await request("/advisors");
+        return res.json();
+    },
+    addAdvisor: async (data: object) => {
+        const res = await request("/advisors", { method: "POST", body: JSON.stringify(data) });
+        return res.json();
+    },
+    updateAdvisor: async (id: string, data: object) => {
+        const res = await request(`/advisors/${id}`, { method: "PUT", body: JSON.stringify(data) });
+        return res.json();
+    },
+    deleteAdvisor: async (id: string) => {
+        const res = await request(`/advisors/${id}`, { method: "DELETE" });
+        return res.json();
+    },
+    reorderAdvisors: async (order: { id: string; sort_order: number }[]) => {
+        const res = await request("/advisors/reorder/batch", { method: "PUT", body: JSON.stringify({ order }) });
+        return res.json();
+    },
+
     changePassword: async (currentPassword: string, newPassword: string) => {
         const res = await request("/auth/password", {
             method: "PUT",
