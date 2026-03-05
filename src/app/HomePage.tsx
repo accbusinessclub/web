@@ -15,8 +15,8 @@ export function HomePage() {
             <Navbar />
             <Hero />
             <About />
-            <Panel />
             <Moderator />
+            <Panel />
             <Events />
             <Gallery />
             <Join />
