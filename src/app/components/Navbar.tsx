@@ -17,7 +17,7 @@ export function Navbar() {
   const navItems = [
     { name: "Home", href: "/", isAnchor: false },
     { name: "About", href: "/#about", isAnchor: true },
-    { name: "Panel", href: "/#panel", isAnchor: true },
+    { name: "Executives", href: "/#panel", isAnchor: true },
     { name: "Teachers", href: "/teachers", isAnchor: false },
     { name: "Advisors", href: "/advisors", isAnchor: false },
     { name: "Gallery", href: "/#gallery", isAnchor: true },
