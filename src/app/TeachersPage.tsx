@@ -63,7 +63,7 @@ export function TeachersPage() {
                     Teachers Panel
                 </h1>
                 <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "17px", margin: 0 }}>
-                    Meet the faculty members who lead, guide, and inspire ACCBC
+                    Meet the faculty members who lead, guide, and inspire ABC
                 </p>
             </div>
 

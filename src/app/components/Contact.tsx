@@ -128,7 +128,7 @@ export function Contact() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="ACCBC Location"
+                title="ABC Location"
               />
             </div>
             <p className="text-sm text-gray-500 mt-4"></p>

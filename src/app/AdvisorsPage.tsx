@@ -40,7 +40,7 @@ export function AdvisorsPage() {
                     Advisors Panel
                 </h1>
                 <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "17px", margin: 0 }}>
-                    Distinguished advisors who support and shape the vision of ACCBC
+                    Distinguished advisors who support and shape the vision of ABC
                 </p>
             </div>
 

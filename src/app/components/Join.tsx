@@ -50,7 +50,7 @@ export function Join() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl text-[#063970] mb-4">
-              Join ACCBC
+              Join ABC
             </h2>
             <p className="text-lg text-[#919ea7] max-w-2xl mx-auto">
               Become a part of our vibrant community and unlock endless opportunities

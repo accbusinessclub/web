@@ -24,7 +24,7 @@ export function About() {
       icon: Calendar,
       title: "Established",
       description:
-        "Founded in 2015, ACCBC has been at the forefront of business education and professional development for Adamjee Cantonment College students.",
+        "Founded in 2015, ABC has been at the forefront of business education and professional development for Adamjee Cantonment College students.",
     },
   ];
 
@@ -33,7 +33,7 @@ export function About() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl text-[#063970] mb-4">
-            About ACCBC
+            About ABC
           </h2>
           <p className="text-lg text-[#919ea7] max-w-3xl mx-auto">
             The Adamjee Cantonment College Business Club is dedicated to fostering

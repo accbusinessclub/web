@@ -75,7 +75,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Club Logo & Description */}
           <div className="text-center md:text-left">
-            <h3 className="text-2xl mb-4">ACCBC</h3>
+            <h3 className="text-2xl mb-4">ABC</h3>
             <p className="text-white/80 text-sm">
               Possibilities are Infinite, Those Who Dare Win.
             </p>

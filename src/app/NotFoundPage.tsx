@@ -87,7 +87,7 @@ export function NotFoundPage() {
                     lineHeight: 1.6,
                 }}>
                     The page you're looking for doesn't exist or has been moved.
-                    Head back to the ACCBC homepage.
+                    Head back to the ABC homepage.
                 </p>
 
                 {/* Buttons */}

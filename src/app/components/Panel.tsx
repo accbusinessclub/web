@@ -41,7 +41,7 @@ export function Panel() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl text-[#063970] mb-4">Executive Committee</h2>
-            <p className="text-lg text-[#919ea7] max-w-2xl mx-auto">Meet the dedicated team leading ACCBC towards excellence and innovation</p>
+            <p className="text-lg text-[#919ea7] max-w-2xl mx-auto">Meet the dedicated team leading ABC towards excellence and innovation</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
@@ -65,7 +65,7 @@ export function Panel() {
             Executive Committee
           </h2>
           <p className="text-lg text-[#919ea7] max-w-2xl mx-auto">
-            Meet the dedicated team leading ACCBC towards excellence and innovation
+            Meet the dedicated team leading ABC towards excellence and innovation
           </p>
         </div>
 

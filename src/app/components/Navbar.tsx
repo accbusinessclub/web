@@ -64,7 +64,7 @@ export function Navbar() {
           <div className="flex-shrink-0">
             <img
               src="https://res.cloudinary.com/dng3uvlfr/image/upload/v1772148321/FreeSample-Vectorizer-io-cropped_circle_image_a9za1g.svg"
-              alt="ACCBC Logo"
+              alt="ABC Logo"
               className="h-10 w-10"
             />
           </div>

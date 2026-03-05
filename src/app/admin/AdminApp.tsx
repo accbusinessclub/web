@@ -236,7 +236,7 @@ export function AdminApp() {
                     {sidebarOpen && (
                         <div>
                             <div style={{ fontWeight: "700", fontSize: "16px", lineHeight: 1.2 }}>
-                                ACCBC Admin
+                                ABC Admin
                             </div>
                             <div style={{ fontSize: "12px", opacity: 0.6, marginTop: "2px" }}>
                                 Control Panel

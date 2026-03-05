@@ -79,7 +79,7 @@ export function Alumni() {
                         Our Alumni
                     </h2>
                     <p className="text-lg text-[#919ea7] max-w-2xl mx-auto">
-                        Celebrating our past leaders who have contributed to ACCBC's legacy
+                        Celebrating our past leaders who have contributed to ABC's legacy
                     </p>
                 </div>
 
@@ -89,8 +89,8 @@ export function Alumni() {
                             key={year}
                             onClick={() => setSelectedYear(year)}
                             className={`px-6 py-2 rounded-lg transition-all duration-200 ${selectedYear === year
-                                    ? "bg-[#063970] text-white shadow-md"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                ? "bg-[#063970] text-white shadow-md"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                         >
                             {year === "all" ? "All Years" : year}
